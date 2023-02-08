@@ -1,10 +1,10 @@
 <template>
     <div class="todo-footer">
         <label>
-            <input type="checkbox" />
+            <input type="checkbox" :checked="isAllCompleted" @change="selectAllItem" />
         </label>
         <span>
-            <span>已完成0</span> / 全部2
+            <span>已完成{{ completedCount }}</span> / 全部{{ todos.length }}
         </span>
         <button class="btn btn-danger">清除已完成任务</button>
     </div>
@@ -12,7 +12,28 @@
 
 <script>
 export default {
-    name: 'MyFooter'
+    name: 'MyFooter',
+    props: ['todos','selectAll'],
+    computed: {
+        completedCount() {
+            var result = 0;
+            this.todos.forEach((todo) => {
+                if (todo.completed) {
+                    result++
+                }
+            });
+            return result;
+        },
+        isAllCompleted() {
+            return (this.completedCount == this.todos.length) && (this.todos.length > 0)
+        }
+    },
+    methods: {
+        selectAllItem(e) {
+            console.log("是否全选:>", e.target.checked)
+            this.selectAll(e.target.checked)
+        }
+    }
 }
 </script>
 

@@ -5,8 +5,8 @@
       <div class="todo-container">
         <div class="todo-wrap">
           <MyHeader :addTodoItem="addTodoItem" />
-          <MyList :todos="todos" />
-          <MyFooter />
+          <MyList :todos="todos" :changeItem="changeItem" :deleteItem="deleteItem" />
+          <MyFooter :todos="todos" :selectAll="selectAll" />
         </div>
       </div>
     </div>
@@ -41,6 +41,29 @@ export default {
       if (item) {
         this.todos.unshift(item)
       }
+    },
+    changeItem(id) {
+      console.log(id)
+      for (const key in this.todos) {
+        if (Object.hasOwnProperty.call(this.todos, key)) {
+          const element = this.todos[key];
+          if (element.id === id) {
+            this.todos[key].completed = !this.todos[key].completed;
+          }
+        }
+      }
+    },
+    deleteItem(id) {
+      if (confirm('确定删除吗？')) {
+        this.todos = this.todos.filter((todo) => {
+          return todo.id !== id
+        })
+      }
+    },
+    selectAll(x) {
+      this.todos.forEach((todo) => {
+        return todo.completed = x
+      });
     }
   }
 }
